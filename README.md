@@ -1,2 +1,2 @@
 # ecommerce-marmoraria-api
-A backend for the repository ecommerce-marmoraria
+Um backend a ser consumido pelo repositório ecommerce-marmoraria

@@ -4,7 +4,8 @@
   "description": "Um backend a ser consumido pelo repositório ecommerce-marmoraria",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node-dev --ignore-watch node_modules src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +17,7 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.3.3"
   }
 }

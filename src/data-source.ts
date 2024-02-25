@@ -1,4 +1,4 @@
-import { Db, MongoClient, ServerApiVersion } from "mongodb";
+import { MongoClient, ServerApiVersion } from "mongodb";
 require("dotenv").config();
 
 const username = process.env.MONGODB_USERNAME;

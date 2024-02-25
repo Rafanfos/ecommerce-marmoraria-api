@@ -4,6 +4,7 @@ require("dotenv").config();
 const username = process.env.MONGODB_USERNAME;
 const password = process.env.MONGODB_PASSWORD;
 const clusterUri = process.env.MONGODB_URI;
+const eCommerceDb = "e-commerce-marmoraria";
 
 if (!username || !password || !clusterUri) {
   throw new Error(
@@ -22,13 +23,9 @@ const client = new MongoClient(uri, {
 });
 
 async function run() {
-  try {
-    await client.connect();
-    await client.db("admin").command({ ping: 1 });
-    console.log("Conectado ao banco de dados com sucesso!");
-  } finally {
-    await client.close();
-  }
+  await client.connect();
+  await client.db(eCommerceDb).command({ ping: 1 });
+  console.log("Conectado ao banco de dados com sucesso!");
 }
 
-export { run };
+export { run, eCommerceDb, client };

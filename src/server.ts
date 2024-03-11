@@ -1,8 +1,7 @@
-import express from "express";
 import { run } from "./data-source";
+import { app } from "./app";
 
-const app = express();
-const port = 3000;
+const port = 3001;
 
 (async () => {
   try {

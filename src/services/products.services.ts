@@ -1,4 +1,4 @@
-import { ProductModel } from "../models/product.model";
+import { ProductModel } from "../models/products.model";
 import { getStoneImgFromS3 } from "./s3.services";
 
 const listProductsService = async () => {

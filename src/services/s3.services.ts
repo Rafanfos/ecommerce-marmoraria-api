@@ -1,14 +1,12 @@
 import AWS from "aws-sdk";
 import s3Config from "../config";
-import { convertImgToBase64 } from "../utils/image.utils";
+import { convertImgToBase64 } from "../utils/images.utils";
 
-// Configurar as credenciais da AWS
 AWS.config.update({
   accessKeyId: s3Config.accessKeyId,
   secretAccessKey: s3Config.secretAccessKey,
 });
 
-// Criar um novo objeto S3
 const s3 = new AWS.S3();
 
 const getStoneImgFromS3 = async (imgPath: string, category: string) => {

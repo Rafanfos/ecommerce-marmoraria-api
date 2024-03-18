@@ -1,5 +1,5 @@
 interface IUser {
-  name?: string;
+  firstName?: string;
   lastName?: string;
   username?: string;
   email?: string;
@@ -11,4 +11,6 @@ interface ICreateUser extends IUser {
   password: string;
 }
 
-export { IUser, ICreateUser };
+interface IUserDocument extends Document, ICreateUser {}
+
+export { ICreateUser, IUser, IUserDocument };

@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { listProductsController } from "../controllers/products.controller";
 
 const authRouter = Router();
+
+authRouter.post("");
 
 export default authRouter;

@@ -1,10 +1,10 @@
-import { MongoClient, ServerApiVersion } from "mongodb";
-require("dotenv").config();
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
 
 const username = process.env.MONGODB_USERNAME;
 const password = process.env.MONGODB_PASSWORD;
 const clusterUri = process.env.MONGODB_URI;
-const eCommerceDb = "e-commerce-marmoraria";
 
 if (!username || !password || !clusterUri) {
   throw new Error(
@@ -12,20 +12,11 @@ if (!username || !password || !clusterUri) {
   );
 }
 
-const uri = `mongodb+srv://${username}:${password}${clusterUri}`;
+const uri = `mongodb+srv://${username}:${password}${clusterUri}/e-commerce-marmoraria`;
 
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
-
-async function run() {
-  await client.connect();
-  await client.db(eCommerceDb).command({ ping: 1 });
+async function main() {
+  await mongoose.connect(uri);
   console.log("Conectado ao banco de dados com sucesso!");
 }
 
-export { run, eCommerceDb, client };
+export { main };

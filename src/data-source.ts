@@ -12,10 +12,12 @@ if (!username || !password || !clusterUri) {
   );
 }
 
-const uri = `mongodb+srv://${username}:${password}${clusterUri}/e-commerce-marmoraria`;
+const uri = `mongodb+srv://${username}:${password}${clusterUri}`;
+
+const options = { dbName: "e-commerce-marmoraria" };
 
 async function main() {
-  await mongoose.connect(uri);
+  await mongoose.connect(uri, options);
   console.log("Conectado ao banco de dados com sucesso!");
 }
 

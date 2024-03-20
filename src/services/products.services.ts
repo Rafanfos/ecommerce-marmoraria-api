@@ -8,7 +8,7 @@ const listProductsService = async () => {
     const productsWithFullUrls = await Promise.all(
       products.map(async (product) => {
         try {
-          const updatedProduct = { ...product };
+          const updatedProduct = product;
 
           const s3Img = await getStoneImgFromS3(
             updatedProduct.path,

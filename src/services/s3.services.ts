@@ -12,6 +12,7 @@ const s3 = new AWS.S3();
 const getStoneImgFromS3 = async (imgPath: string, category: string) => {
   try {
     const key = `imagens-produtos/${category}/${imgPath}`;
+
     const params = {
       Bucket: s3Config.s3Bucket,
       Key: key,

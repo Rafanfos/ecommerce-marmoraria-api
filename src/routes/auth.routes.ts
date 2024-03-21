@@ -5,12 +5,16 @@ import {
 } from "../controllers/auth.controllers";
 import {
   validateLoginMiddleware,
-  verifyEmailExistsMiddleware,
+  verifyEmailOrUsernameExistsMiddleware,
 } from "../middlewares/auth.middleware";
 
 const authRouter = Router();
 
-authRouter.post("/register", verifyEmailExistsMiddleware, createUserController);
+authRouter.post(
+  "/register",
+  verifyEmailOrUsernameExistsMiddleware,
+  createUserController
+);
 authRouter.post("/login", validateLoginMiddleware, loginController);
 
 export default authRouter;

@@ -10,15 +10,15 @@ interface AuthenticatedRequest extends Request {
   };
 }
 
-const verifyEmailExistsMiddleware = async (
+const verifyEmailOrUsernameExistsMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   const { email, username } = req.body;
 
-  const foundEmail = UserModel.findOne({ email });
-  const foundUsername = UserModel.findOne({ username });
+  const foundEmail = await UserModel.findOne({ email });
+  const foundUsername = await UserModel.findOne({ username });
 
   if (foundEmail) {
     return res.status(409).json({ msg: "E-mail já registrado!" });
@@ -98,7 +98,7 @@ const verifyAuthMiddleware = async (
 };
 
 export {
-  verifyEmailExistsMiddleware,
+  verifyEmailOrUsernameExistsMiddleware,
   validateLoginMiddleware,
   verifyAuthMiddleware,
 };

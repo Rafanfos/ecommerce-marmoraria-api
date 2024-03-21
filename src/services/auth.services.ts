@@ -44,9 +44,11 @@ const loginService = async (loginData: IUserLogin) => {
     throw new AppError("Usuário não encontrado!", 404);
   }
 
-  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY, {
     expiresIn: "24h",
   });
+
+  return token;
 };
 
 export { createUserService, loginService };

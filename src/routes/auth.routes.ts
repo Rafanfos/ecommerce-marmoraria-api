@@ -11,6 +11,6 @@ import {
 const authRouter = Router();
 
 authRouter.post("/register", verifyEmailExistsMiddleware, createUserController);
-authRouter.post("login", validateLoginMiddleware, loginController);
+authRouter.post("/login", validateLoginMiddleware, loginController);
 
 export default authRouter;

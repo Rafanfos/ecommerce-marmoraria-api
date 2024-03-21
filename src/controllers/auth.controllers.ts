@@ -1,12 +1,20 @@
 import { Request, Response } from "express";
-import { createUserService } from "../services/auth.services";
+import { createUserService, loginService } from "../services/auth.services";
+import { IUserLogin } from "../interfaces/users.interfaces";
 
 const createUserController = async (req: Request, res: Response) => {
   const userData = req.body;
 
   const productsList = await createUserService(userData);
 
-  return res.json(productsList);
+  return res.status(200).json(productsList);
 };
 
-export { createUserController };
+const loginController = async (req: Request, res: Response) => {
+  const loginData: IUserLogin = req.body;
+  const token = await loginService(loginData);
+
+  return res.status(200).json({ token });
+};
+
+export { createUserController, loginController };

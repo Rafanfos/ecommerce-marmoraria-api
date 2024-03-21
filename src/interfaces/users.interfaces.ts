@@ -1,10 +1,18 @@
 interface IUser {
-  firstName?: string;
-  lastName?: string;
+  _id?: string;
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  createdAt: Date;
+  updatedAt: Date;
+  password?: string;
+}
+
+interface IUserLogin {
   username?: string;
   email?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  password?: string;
 }
 
 interface ICreateUser extends IUser {
@@ -13,4 +21,4 @@ interface ICreateUser extends IUser {
 
 interface IUserDocument extends Document, ICreateUser {}
 
-export { ICreateUser, IUser, IUserDocument };
+export { ICreateUser, IUser, IUserDocument, IUserLogin };

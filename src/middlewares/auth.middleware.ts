@@ -15,12 +15,17 @@ const verifyEmailExistsMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { email } = req.body;
+  const { email, username } = req.body;
 
   const foundEmail = UserModel.findOne({ email });
+  const foundUsername = UserModel.findOne({ username });
 
   if (foundEmail) {
-    return res.status(409).json({ message: "E-mail já registrado!" });
+    return res.status(409).json({ msg: "E-mail já registrado!" });
+  }
+
+  if (foundUsername) {
+    return res.status(409).json({ msg: "Nome de usuário já registrado!" });
   }
 
   return next();
@@ -71,7 +76,7 @@ const verifyAuthMiddleware = async (
 
   if (!token) {
     return res.status(401).json({
-      message: "Token inválido",
+      msg: "Token inválido",
     });
   }
 
@@ -80,7 +85,7 @@ const verifyAuthMiddleware = async (
   jwt.verify(token, process.env.SECRET_KEY, (error: Error, decoded: any) => {
     if (error) {
       return res.status(401).json({
-        message: "Erroa o verificar token!",
+        msg: "Erroa o verificar token!",
       });
     }
 

@@ -4,7 +4,7 @@ import { listProductsService } from "../services/products.services";
 const listProductsController = async (req: Request, res: Response) => {
   const productsList = await listProductsService();
 
-  return res.json(productsList);
+  return res.status(200).json({ data: productsList });
 };
 
 export { listProductsController };

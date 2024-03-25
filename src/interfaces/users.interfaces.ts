@@ -7,6 +7,7 @@ interface IUser {
   createdAt: Date;
   updatedAt: Date;
   password?: string;
+  isAdmin?: boolean;
 }
 
 interface IUserLogin {
@@ -15,10 +16,6 @@ interface IUserLogin {
   password?: string;
 }
 
-interface ICreateUser extends IUser {
-  password: string;
-}
+interface IUserDocument extends Document, IUser {}
 
-interface IUserDocument extends Document, ICreateUser {}
-
-export { ICreateUser, IUser, IUserDocument, IUserLogin };
+export { IUser, IUserDocument, IUserLogin };

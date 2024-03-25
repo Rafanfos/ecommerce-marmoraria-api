@@ -1,18 +1,18 @@
-import { Document, Types } from "mongoose";
 import {
-  ICreateUser,
+  IUser,
   IUserDocument,
   IUserLogin,
 } from "../interfaces/users.interfaces";
 import { UserModel } from "../models/users.model";
-import { removeUserPassword } from "../utils/users.utils";
 import jwt from "jsonwebtoken";
 import { AppError } from "../errors/app.error";
+import dotenv from "dotenv";
+dotenv.config();
 
-const createUserService = async (userData: ICreateUser) => {
+const createUserService = async (userData: IUser) => {
   const { firstName, lastName, email, username, password } = userData;
 
-  const newUser = new UserModel({
+  const newUser = await UserModel.create({
     firstName,
     lastName,
     email,
@@ -20,11 +20,11 @@ const createUserService = async (userData: ICreateUser) => {
     password,
   });
 
-  const savedUser = await newUser.save();
+  const newUserObject = newUser.toObject();
 
-  const userWithouPassword = removeUserPassword(savedUser);
+  delete newUserObject.password;
 
-  return userWithouPassword;
+  return newUserObject;
 };
 
 const loginService = async (loginData: IUserLogin) => {
@@ -44,9 +44,18 @@ const loginService = async (loginData: IUserLogin) => {
     throw new AppError("Usuário não encontrado!", 404);
   }
 
-  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_KEY, {
-    expiresIn: "24h",
-  });
+  const token = jwt.sign(
+    {
+      isAdm: user.isAdmin,
+    },
+    process.env.JWT_SECRET_KEY,
+    {
+      subject: String(user._id),
+      expiresIn: "24h",
+    }
+  );
+
+  return token;
 
   return token;
 };

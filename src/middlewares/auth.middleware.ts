@@ -3,12 +3,9 @@ import { compare } from "bcrypt";
 import { Request, Response, NextFunction } from "express";
 import { IUser } from "../interfaces/users.interfaces";
 import jwt from "jsonwebtoken";
-
-interface AuthenticatedRequest extends Request {
-  user?: {
-    id: string;
-  };
-}
+import { AuthenticatedRequest } from "../interfaces/auth.interfaces";
+import dotenv from "dotenv";
+dotenv.config();
 
 const verifyEmailOrUsernameExistsMiddleware = async (
   req: Request,
@@ -21,11 +18,11 @@ const verifyEmailOrUsernameExistsMiddleware = async (
   const foundUsername = await UserModel.findOne({ username });
 
   if (foundEmail) {
-    return res.status(409).json({ msg: "E-mail já registrado!" });
+    return res.status(409).json({ err: "E-mail já registrado!" });
   }
 
   if (foundUsername) {
-    return res.status(409).json({ msg: "Nome de usuário já registrado!" });
+    return res.status(409).json({ err: "Nome de usuário já registrado!" });
   }
 
   return next();
@@ -55,13 +52,13 @@ const validateLoginMiddleware = async (
   }
 
   if (!loginUser) {
-    return res.status(403).json({ msg: loginErrorMessage });
+    return res.status(403).json({ err: loginErrorMessage });
   }
 
   const passwordMatch = await compare(password, loginUser.password);
 
   if (!passwordMatch) {
-    return res.status(403).json({ msg: loginErrorMessage });
+    return res.status(403).json({ err: loginErrorMessage });
   }
 
   return next();
@@ -82,19 +79,24 @@ const verifyAuthMiddleware = async (
 
   token = token.split(" ")[1];
 
-  jwt.verify(token, process.env.SECRET_KEY, (error: Error, decoded: any) => {
-    if (error) {
-      return res.status(401).json({
-        msg: "Erroa o verificar token!",
-      });
+  jwt.verify(
+    token,
+    process.env.JWT_SECRET_KEY,
+    (error: Error, decoded: any) => {
+      if (error) {
+        return res.status(401).json({
+          err: "Erro ao verificar token!",
+        });
+      }
+
+      req.user = {
+        id: decoded.sub,
+        isAdmin: decoded.isAdm,
+      };
+
+      return next();
     }
-
-    req.user = {
-      id: decoded.sub as string,
-    };
-
-    return next();
-  });
+  );
 };
 
 export {

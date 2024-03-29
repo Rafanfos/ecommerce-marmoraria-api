@@ -1,6 +1,7 @@
 import AWS from "aws-sdk";
 import s3Config from "../config";
 import { convertImgToBase64 } from "../utils/images.utils";
+import { AppError } from "../errors/app.error";
 
 AWS.config.update({
   accessKeyId: s3Config.accessKeyId,
@@ -29,4 +30,19 @@ const getStoneImgFromS3 = async (imgPath: string, category: string) => {
   }
 };
 
-export { getStoneImgFromS3 };
+const uploadAvatarToS3 = async (img: any, userId: string) => {
+  try {
+    const params = {
+      filePath: `users/avatars/${userId}_${Date.now()}_${file.name}`,
+      buffer: img.data, // Using timestamp to ensure unique filenames
+      ContentType: image.type,
+      ACL: "public-read",
+    };
+
+    const data = await s3.upload(params).promise();
+  } catch (error) {
+    throw new AppError("Erro ao enviar avatar para o S3", 500);
+  }
+};
+
+export { getStoneImgFromS3, uploadAvatarToS3 };

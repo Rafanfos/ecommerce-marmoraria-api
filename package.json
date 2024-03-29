@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/multer": "^1.4.11",
     "aws-sdk": "^2.1570.0",
     "axios": "^1.6.7",
     "bcrypt": "^5.1.1",

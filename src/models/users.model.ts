@@ -1,8 +1,26 @@
 import mongoose from "mongoose";
-import { IUserDocument } from "../interfaces/users.interfaces";
+import {
+  IAddress,
+  IPhoneNumber,
+  IUserDocument,
+} from "../interfaces/users.interfaces";
 import bcrypt from "bcrypt";
 
 const { Schema } = mongoose;
+
+const addressSchema = new Schema<IAddress>({
+  postalCode: { type: String, required: true },
+  number: { type: Number, required: true },
+  street: { type: String, required: true },
+  district: { type: String },
+  city: { type: String, required: true },
+  state: { type: String, required: true },
+});
+
+const phoneSchema = new Schema<IPhoneNumber>({
+  localCode: { type: Number, required: true },
+  number: { type: Number, required: true },
+});
 
 const userSchema = new Schema<IUserDocument>(
   {
@@ -12,6 +30,8 @@ const userSchema = new Schema<IUserDocument>(
     username: { type: String, required: true },
     password: { type: String, required: true },
     isAdmin: { type: Boolean, default: false },
+    addresses: [addressSchema],
+    phones: [phoneSchema],
   },
   {
     timestamps: true,

@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
-import { listProductsService } from "../services/products.services";
+import {
+  createProductService,
+  listProductsService,
+} from "../services/products.services";
 
 const listProductsController = async (req: Request, res: Response) => {
   const productsList = await listProductsService();
@@ -7,4 +10,12 @@ const listProductsController = async (req: Request, res: Response) => {
   return res.status(200).json({ data: productsList });
 };
 
-export { listProductsController };
+const createProductController = async (req: Request, res: Response) => {
+  const productData = req.body;
+
+  const createdProduct = await createProductService(productData);
+
+  return res.status(200).json({ data: createdProduct });
+};
+
+export { listProductsController, createProductController };

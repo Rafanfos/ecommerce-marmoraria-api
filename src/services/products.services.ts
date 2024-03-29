@@ -1,3 +1,5 @@
+import { AppError } from "../errors/app.error";
+import { IProduct } from "../interfaces/products.interface";
 import { ProductModel } from "../models/products.model";
 import { getStoneImgFromS3 } from "./s3.services";
 
@@ -26,9 +28,18 @@ const listProductsService = async () => {
 
     return productsWithFullUrls;
   } catch (error) {
-    console.error("Erro ao listar produtos:", error);
-    throw new Error("Erro ao listar produtos");
+    throw new AppError("Erro ao listar produtos", 500);
   }
 };
 
-export { listProductsService };
+const createProductService = async (productData: IProduct) => {
+  try {
+    const newProduct = await ProductModel.create(productData);
+
+    return newProduct;
+  } catch (error) {
+    throw new AppError("Erro ao listar produto", 500);
+  }
+};
+
+export { listProductsService, createProductService };

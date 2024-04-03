@@ -1,9 +1,13 @@
 import { AppError } from "../errors/app.error";
-import { IProduct } from "../interfaces/products.interface";
+import {
+  IEditProduct,
+  IProduct,
+  IProductDocument,
+} from "../interfaces/products.interface";
 import { ProductModel } from "../models/products.model";
 import { getStoneImgFromS3 } from "./s3.services";
 
-const listProductsService = async () => {
+const listProductsService = async (): Promise<IProductDocument[]> => {
   try {
     const products = await ProductModel.find({});
 
@@ -32,14 +36,29 @@ const listProductsService = async () => {
   }
 };
 
-const createProductService = async (productData: IProduct) => {
+const createProductService = async (
+  productData: IProduct
+): Promise<IProductDocument> => {
   try {
     const newProduct = await ProductModel.create(productData);
 
     return newProduct;
   } catch (error) {
-    throw new AppError("Erro ao listar produto", 500);
+    throw new AppError("Erro ao criar produto", 500);
   }
+};
+
+const updateProductService = async (
+  productData: IEditProduct
+): Promise<IProductDocument> => {
+  const { _id, ...updatedFields } = productData;
+
+  const updatedProduct = await ProductModel.findByIdAndUpdate(
+    _id,
+    updatedFields
+  );
+
+  return updatedProduct;
 };
 
 export { listProductsService, createProductService };

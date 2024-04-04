@@ -61,4 +61,19 @@ const updateProductService = async (
   return updatedProduct;
 };
 
-export { listProductsService, createProductService };
+const deleteProductService = async (
+  userId: string,
+  deleteId: string
+): Promise<void> => {
+  console.log(typeof userId);
+  await ProductModel.deleteById(deleteId, userId);
+
+  return;
+};
+
+export {
+  listProductsService,
+  createProductService,
+  updateProductService,
+  deleteProductService,
+};

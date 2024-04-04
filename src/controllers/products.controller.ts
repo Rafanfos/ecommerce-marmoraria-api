@@ -1,8 +1,11 @@
 import { Request, Response } from "express";
 import {
   createProductService,
+  deleteProductService,
   listProductsService,
+  updateProductService,
 } from "../services/products.services";
+import { AuthenticatedRequest } from "../interfaces/auth.interfaces";
 
 const listProductsController = async (
   req: Request,
@@ -30,13 +33,26 @@ const updateProductController = async (
 ): Promise<Response> => {
   const productData = { _id: req.params.productId, ...req.body };
 
-  const updatedProduct = await createProductService(productData);
+  const updatedProduct = await updateProductService(productData);
 
   return res.status(200).json({ data: updatedProduct });
+};
+
+const deleteProductController = async (
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<Response> => {
+  const { productId } = req.params;
+  const { id } = req.user;
+
+  await deleteProductService(id, productId);
+
+  return res.status(200).json({});
 };
 
 export {
   listProductsController,
   createProductController,
   updateProductController,
+  deleteProductController,
 };

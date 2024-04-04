@@ -1,3 +1,5 @@
+import { SoftDeleteDocument } from "mongoose-delete";
+
 interface IProduct {
   name: string;
   category?: string;
@@ -15,6 +17,6 @@ interface IEditProduct {
   price?: number;
 }
 
-interface IProductDocument extends Document, IProduct {}
+interface IProductDocument extends SoftDeleteDocument, IProduct {}
 
 export { IProductDocument, IProduct, IEditProduct };

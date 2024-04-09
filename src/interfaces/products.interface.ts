@@ -17,6 +17,6 @@ interface IEditProduct {
   price?: number;
 }
 
-interface IProductDocument extends SoftDeleteDocument, IProduct {}
+interface IProductDocument extends IProduct, SoftDeleteDocument {}
 
 export { IProductDocument, IProduct, IEditProduct };

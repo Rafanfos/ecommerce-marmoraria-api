@@ -9,7 +9,7 @@ import { getStoneImgFromS3 } from "./s3.services";
 
 const listProductsService = async (): Promise<IProductDocument[]> => {
   try {
-    const products = await ProductModel.find({});
+    const products = await ProductModel.find();
 
     const productsWithFullUrls = await Promise.all(
       products.map(async (product) => {
@@ -65,7 +65,6 @@ const deleteProductService = async (
   userId: string,
   deleteId: string
 ): Promise<void> => {
-  console.log(typeof userId);
   await ProductModel.deleteById(deleteId, userId);
 
   return;

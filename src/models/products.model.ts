@@ -20,8 +20,12 @@ productSchema.plugin(MongooseDelete, {
   deletedBy: true,
   deletedByType: String,
   deletedAt: true,
+  overrideMethods: true,
 });
 
-const ProductModel: any = model<IProductDocument>("Product", productSchema);
+const ProductModel: SoftDeleteModel<IProductDocument> = model<IProductDocument>(
+  "Product",
+  productSchema
+) as SoftDeleteModel<IProductDocument>;
 
 export { ProductModel };

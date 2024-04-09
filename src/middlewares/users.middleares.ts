@@ -31,7 +31,7 @@ const verifyAdminRoleMiddleware = (
   const { isAdmin, adminRoleUpdate } = req.user;
 
   if (!adminRoleUpdate) {
-    next();
+    return next();
   }
 
   if (!isAdmin) {

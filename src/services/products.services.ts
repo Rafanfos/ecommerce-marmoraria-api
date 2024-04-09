@@ -1,9 +1,15 @@
+import { AppError } from "../errors/app.error";
+import {
+  IEditProduct,
+  IProduct,
+  IProductDocument,
+} from "../interfaces/products.interface";
 import { ProductModel } from "../models/products.model";
 import { getStoneImgFromS3 } from "./s3.services";
 
-const listProductsService = async () => {
+const listProductsService = async (): Promise<IProductDocument[]> => {
   try {
-    const products = await ProductModel.find({});
+    const products = await ProductModel.find();
 
     const productsWithFullUrls = await Promise.all(
       products.map(async (product) => {
@@ -26,9 +32,47 @@ const listProductsService = async () => {
 
     return productsWithFullUrls;
   } catch (error) {
-    console.error("Erro ao listar produtos:", error);
-    throw new Error("Erro ao listar produtos");
+    throw new AppError("Erro ao listar produtos", 500);
   }
 };
 
-export { listProductsService };
+const createProductService = async (
+  productData: IProduct
+): Promise<IProductDocument> => {
+  try {
+    const newProduct = await ProductModel.create(productData);
+
+    return newProduct;
+  } catch (error) {
+    throw new AppError("Erro ao criar produto", 500);
+  }
+};
+
+const updateProductService = async (
+  productData: IEditProduct
+): Promise<IProductDocument> => {
+  const { _id, ...updatedFields } = productData;
+
+  const updatedProduct = await ProductModel.findByIdAndUpdate(
+    _id,
+    updatedFields
+  );
+
+  return updatedProduct;
+};
+
+const deleteProductService = async (
+  userId: string,
+  deleteId: string
+): Promise<void> => {
+  await ProductModel.deleteById(deleteId, userId);
+
+  return;
+};
+
+export {
+  listProductsService,
+  createProductService,
+  updateProductService,
+  deleteProductService,
+};

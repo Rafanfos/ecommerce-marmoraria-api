@@ -1,7 +1,6 @@
 import AWS from "aws-sdk";
 import s3Config from "../config";
 import { convertImgToBase64 } from "../utils/images.utils";
-import { AppError } from "../errors/app.error";
 
 AWS.config.update({
   accessKeyId: s3Config.accessKeyId,
@@ -11,8 +10,13 @@ AWS.config.update({
 const s3 = new AWS.S3();
 
 const getStoneImgFromS3 = async (imgPath: string, category: string) => {
+  const formmatedCategory = category
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+
   try {
-    const key = `imagens-produtos/${category}/${imgPath}`;
+    const key = `imagens-produtos/${formmatedCategory}/${imgPath}`;
 
     const params = {
       Bucket: s3Config.s3Bucket,

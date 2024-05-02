@@ -56,8 +56,6 @@ const loginService = async (loginData: IUserLogin) => {
   );
 
   return token;
-
-  return token;
 };
 
 export { createUserService, loginService };

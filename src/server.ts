@@ -1,7 +1,7 @@
 import { app } from "./app";
 import { main } from "./data-source";
 
-const port = 3001;
+const port = process.env.PORT || 4000;
 
 (async () => {
   try {

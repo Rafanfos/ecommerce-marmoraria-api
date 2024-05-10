@@ -4,6 +4,8 @@
   "description": "Um backend a ser consumido pelo repositório ecommerce-marmoraria",
   "main": "server.ts",
   "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --ignore-watch node_modules src/server.ts"
   },

@@ -6,12 +6,15 @@ import {
   updateProductService,
 } from "../services/products.services";
 import { AuthenticatedRequest } from "../interfaces/auth.interfaces";
+import { IRequestQueryProduct } from "../interfaces/products.interface";
 
 const listProductsController = async (
-  req: Request,
+  req: IRequestQueryProduct,
   res: Response
 ): Promise<Response> => {
-  const productsList = await listProductsService();
+  const { category, tags } = req.query;
+
+  const productsList = await listProductsService(category, tags);
 
   return res.status(200).json({ data: productsList });
 };

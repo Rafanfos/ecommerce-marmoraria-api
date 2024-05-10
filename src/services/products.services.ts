@@ -7,9 +7,26 @@ import {
 import { ProductModel } from "../models/products.model";
 import { getStoneImgFromS3 } from "./s3.services";
 
-const listProductsService = async (): Promise<IProductDocument[]> => {
+const listProductsService = async (
+  category?: string,
+  tags?: string
+): Promise<IProductDocument[]> => {
   try {
-    const products = await ProductModel.find();
+    let query: { category: string; tags: any } = {} as {
+      category: string;
+      tags: any;
+    };
+
+    if (category) {
+      query.category = category;
+    }
+
+    // Se houver uma consulta de pesquisa, adicione-a à consulta
+    if (tags) {
+      query.tags = { $regex: tags, $options: "i" };
+    }
+
+    const products = await ProductModel.find(query);
 
     const productsWithFullUrls = await Promise.all(
       products.map(async (product) => {
@@ -32,6 +49,7 @@ const listProductsService = async (): Promise<IProductDocument[]> => {
 
     return productsWithFullUrls;
   } catch (error) {
+    console.log(error);
     throw new AppError("Erro ao listar produtos", 500);
   }
 };

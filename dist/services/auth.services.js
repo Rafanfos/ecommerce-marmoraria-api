@@ -34,7 +34,7 @@ const createUserService = (userData) => __awaiter(void 0, void 0, void 0, functi
 exports.createUserService = createUserService;
 const loginService = (loginData) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, username, password } = loginData;
-    let user;
+    let user = null;
     if (email) {
         user = yield users_model_1.UserModel.findOne({ email }).exec();
     }

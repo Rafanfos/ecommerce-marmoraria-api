@@ -46,6 +46,13 @@ const deleteProductController = async (
   res: Response
 ): Promise<Response> => {
   const { productId } = req.params;
+
+  if (!req.user) {
+    return res.status(401).json({
+      msg: "Usuário não autenticado",
+    });
+  }
+
   const { id } = req.user;
 
   await deleteProductService(id, productId);

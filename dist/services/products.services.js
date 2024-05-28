@@ -23,31 +23,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteProductService = exports.updateProductService = exports.createProductService = exports.listProductsService = void 0;
 const app_error_1 = require("../errors/app.error");
 const products_model_1 = require("../models/products.model");
-const s3_services_1 = require("./s3.services");
 const listProductsService = (category, tags) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let query = {};
         if (category) {
             query.category = category;
         }
-        // Se houver uma consulta de pesquisa, adicione-a à consulta
         if (tags) {
             query.tags = { $regex: tags, $options: "i" };
         }
         const products = yield products_model_1.ProductModel.find(query);
-        const productsWithFullUrls = yield Promise.all(products.map((product) => __awaiter(void 0, void 0, void 0, function* () {
-            try {
-                const updatedProduct = product;
-                const s3Img = yield (0, s3_services_1.getStoneImgFromS3)(updatedProduct.path, updatedProduct.category);
-                updatedProduct.path = s3Img;
-                return updatedProduct;
-            }
-            catch (error) {
-                console.error("Erro ao obter imagem do S3 para o produto:", error);
-                return product;
-            }
-        })));
-        return productsWithFullUrls;
+        return products;
     }
     catch (error) {
         console.log(error);
@@ -68,7 +54,10 @@ exports.createProductService = createProductService;
 const updateProductService = (productData) => __awaiter(void 0, void 0, void 0, function* () {
     const { _id } = productData, updatedFields = __rest(productData, ["_id"]);
     const updatedProduct = yield products_model_1.ProductModel.findByIdAndUpdate(_id, updatedFields);
-    return updatedProduct;
+    if (updatedProduct) {
+        return updatedProduct;
+    }
+    throw new app_error_1.AppError("Erro ao atualizar produto", 404);
 });
 exports.updateProductService = updateProductService;
 const deleteProductService = (userId, deleteId) => __awaiter(void 0, void 0, void 0, function* () {

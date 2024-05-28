@@ -35,7 +35,7 @@ const validateLoginMiddleware = async (
 ) => {
   const { email, username, password } = req.body;
 
-  let loginUser: IUser;
+  let loginUser: IUser | null = null;
 
   const loginErrorMessage = "Email, nome de usuário ou senha incorretos!";
 
@@ -55,7 +55,7 @@ const validateLoginMiddleware = async (
     return res.status(403).json({ err: loginErrorMessage });
   }
 
-  const passwordMatch = await compare(password, loginUser.password);
+  const passwordMatch = await compare(password, loginUser.password as string);
 
   if (!passwordMatch) {
     return res.status(403).json({ err: loginErrorMessage });
@@ -79,10 +79,16 @@ const verifyAuthMiddleware = async (
 
   token = token.split(" ")[1];
 
+  if (!process.env.JWT_SECRET_KEY) {
+    return res.status(500).json({
+      msg: "Chave secreta não definida",
+    });
+  }
+
   jwt.verify(
     token,
     process.env.JWT_SECRET_KEY,
-    (error: Error, decoded: any) => {
+    (error: jwt.VerifyErrors | null, decoded: any) => {
       if (error) {
         return res.status(401).json({
           err: "Erro ao verificar token!",

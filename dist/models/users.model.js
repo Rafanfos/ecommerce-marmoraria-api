@@ -45,9 +45,11 @@ userSchema.pre("save", function (next) {
         const user = this;
         if (!user.isModified("password"))
             return next();
-        const hashedPassword = yield bcrypt_1.default.hash(user.password, 10);
-        user.password = hashedPassword;
-        next();
+        if (user.password) {
+            const hashedPassword = yield bcrypt_1.default.hash(user.password, 10);
+            user.password = hashedPassword;
+            next();
+        }
     });
 });
 const UserModel = mongoose_1.default.model("User", userSchema);

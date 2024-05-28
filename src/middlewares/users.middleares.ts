@@ -16,6 +16,12 @@ const verifyAdminFieldMiddleware = (
 ) => {
   const { isAdmin } = req.body;
 
+  if (!req.user) {
+    return res.status(401).json({
+      msg: "Usuário não autenticado",
+    });
+  }
+
   if (isAdmin !== undefined) {
     req.user.adminRoleUpdate = true;
   }
@@ -28,6 +34,12 @@ const verifyAdminRoleMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
+  if (!req.user) {
+    return res.status(401).json({
+      msg: "Usuário não autenticado",
+    });
+  }
+
   const { isAdmin, adminRoleUpdate } = req.user;
 
   if (!adminRoleUpdate) {

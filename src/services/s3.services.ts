@@ -9,30 +9,30 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
-const getStoneImgFromS3 = async (imgPath: string, category: string) => {
-  const formmatedCategory = category
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
+// const getStoneImgFromS3 = async (imgPath: string, category: string) => {
+//   const formmatedCategory = category
+//     .normalize("NFD")
+//     .replace(/[\u0300-\u036f]/g, "")
+//     .toLowerCase();
 
-  try {
-    const key = `imagens-produtos/${formmatedCategory}/${imgPath}`;
+//   try {
+//     const key = `imagens-produtos/${formmatedCategory}/${imgPath}`;
 
-    const params = {
-      Bucket: s3Config.s3Bucket,
-      Key: key,
-    };
+//     const params = {
+//       Bucket: s3Config.s3Bucket,
+//       Key: key,
+//     };
 
-    const data = await s3.getObject(params).promise();
+//     const data = await s3.getObject(params).promise();
 
-    const formattedData = convertImgToBase64(imgPath, data);
+//     const formattedData = convertImgToBase64(imgPath, data);
 
-    return formattedData;
-  } catch (error) {
-    console.error("Erro ao obter objeto do S3:", error);
-    throw error;
-  }
-};
+//     return formattedData;
+//   } catch (error) {
+//     console.error("Erro ao obter objeto do S3:", error);
+//     throw error;
+//   }
+// };
 
 // const uploadAvatarToS3 = async (img: any, userId: string) => {
 //   try {
@@ -48,5 +48,3 @@ const getStoneImgFromS3 = async (imgPath: string, category: string) => {
 //     throw new AppError("Erro ao enviar avatar para o S3", 500);
 //   }
 // };
-
-export { getStoneImgFromS3 };

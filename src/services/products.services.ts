@@ -5,7 +5,6 @@ import {
   IProductDocument,
 } from "../interfaces/products.interface";
 import { ProductModel } from "../models/products.model";
-import { getStoneImgFromS3 } from "./s3.services";
 
 const listProductsService = async (
   category?: string,
@@ -21,33 +20,13 @@ const listProductsService = async (
       query.category = category;
     }
 
-    // Se houver uma consulta de pesquisa, adicione-a à consulta
     if (tags) {
       query.tags = { $regex: tags, $options: "i" };
     }
 
     const products = await ProductModel.find(query);
 
-    const productsWithFullUrls = await Promise.all(
-      products.map(async (product) => {
-        try {
-          const updatedProduct = product;
-
-          const s3Img = await getStoneImgFromS3(
-            updatedProduct.path,
-            updatedProduct.category
-          );
-          updatedProduct.path = s3Img;
-
-          return updatedProduct;
-        } catch (error) {
-          console.error("Erro ao obter imagem do S3 para o produto:", error);
-          return product;
-        }
-      })
-    );
-
-    return productsWithFullUrls;
+    return products;
   } catch (error) {
     console.log(error);
     throw new AppError("Erro ao listar produtos", 500);
@@ -76,7 +55,11 @@ const updateProductService = async (
     updatedFields
   );
 
-  return updatedProduct;
+  if (updatedProduct) {
+    return updatedProduct;
+  }
+
+  throw new AppError("Erro ao atualizar produto", 404);
 };
 
 const deleteProductService = async (

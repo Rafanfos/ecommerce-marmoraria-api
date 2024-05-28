@@ -30,7 +30,7 @@ const createUserService = async (userData: IUser) => {
 const loginService = async (loginData: IUserLogin) => {
   const { email, username, password } = loginData;
 
-  let user: IUserDocument;
+  let user: IUserDocument | null = null;
 
   if (email) {
     user = await UserModel.findOne({ email }).exec();
@@ -48,7 +48,7 @@ const loginService = async (loginData: IUserLogin) => {
     {
       isAdm: user.isAdmin,
     },
-    process.env.JWT_SECRET_KEY,
+    process.env.JWT_SECRET_KEY as string,
     {
       subject: String(user._id),
       expiresIn: "24h",

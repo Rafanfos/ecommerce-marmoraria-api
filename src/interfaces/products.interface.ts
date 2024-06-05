@@ -19,7 +19,7 @@ interface IEditProduct {
 }
 
 interface IRequestQueryProduct extends Request {
-  query: { category: string; tags: string };
+  query: { category: string; tags: string; page: string; results: string };
 }
 
 interface IProductDocument extends IProduct, SoftDeleteDocument {}

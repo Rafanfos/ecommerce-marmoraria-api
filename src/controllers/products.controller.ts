@@ -12,9 +12,15 @@ const listProductsController = async (
   req: IRequestQueryProduct,
   res: Response
 ): Promise<Response> => {
-  const { category, tags } = req.query;
-
-  const productsList = await listProductsService(category, tags);
+  const { page, results, category, tags } = req.query;
+  const pageNumber = Number(page);
+  const pageResults = Number(results);
+  const productsList = await listProductsService(
+    pageNumber,
+    pageResults,
+    category,
+    tags
+  );
 
   return res.status(200).json({ data: productsList });
 };

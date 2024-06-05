@@ -3,7 +3,7 @@ import { verifyAuthMiddleware } from "../middlewares/auth.middleware";
 import {
   verifyAdminFieldMiddleware,
   verifyAdminRoleMiddleware,
-} from "../middlewares/users.middleares";
+} from "../middlewares/users.middleare";
 import { updateUserController } from "../controllers/users.controllers";
 
 const usersRouter = Router();

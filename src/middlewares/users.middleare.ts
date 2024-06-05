@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import { AppError } from "../errors/app.error";
 
 interface AuthenticatedRequest extends Request {
   user?: {

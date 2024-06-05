@@ -6,7 +6,7 @@ import {
   updateProductController,
 } from "../controllers/products.controller";
 import { verifyAuthMiddleware } from "../middlewares/auth.middleware";
-import { verifyAdminRoleMiddleware } from "../middlewares/users.middleares";
+import { verifyAdminRoleMiddleware } from "../middlewares/users.middleare";
 
 const productsRouter = Router();
 
